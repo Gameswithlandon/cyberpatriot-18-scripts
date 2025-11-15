@@ -5,6 +5,18 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
+if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    if [ "$ID" != "linuxmint" ]; then
+        echo "This script is designed for Linux Mint."
+        echo "You are running $ID. Aborting."
+        exit 1
+    fi
+else
+    echo "Could not verify OS. /etc/os-release not found. Aborting."
+    exit 1
+fi
+
 update_system() {
     echo "--- [1] Starting System Update & Upgrade ---"
     apt update
